@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<h2 style="text-align: center;">Best Selling Games by Region (per 100 000 Capita)</h2>
+<div style="position: relative; width: 2000px; left:-625px;">
+        <div width="1000" height="1000"style="float: left;">
+            <svg id="bubbleNA" width="1000" height="1000"></svg>
+        </div>
+        <div width="1000"  height="100"style="float: right;">
+            <svg id="bubbleJapan" width="1000" height="1000"></svg>
+        </div>
+</div>
+<!–– code based on code from: https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168
+This file is split into two seperate scripts, one for each chart. Code is nearly identical for the two parts-->
+<script type="text/javascript">
+    //function below retrieved from https://blog.abelotech.com/posts/number-currency-formatting-javascript/
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    d3.csv("gameData.csv")
+    dataset = {
+        "children": [{"Name":"Grand Theft Auto V","Sales":1047,"Region":"NA"},
+            {"Name":"Red Dead Redemption 2","Sales":909,"Region":"NA"},
+            {"Name":"Call of Duty: WWII","Sales":807,"Region":"NA"},
+            {"Name":"FIFA 18","Sales":220,"Region":"NA"},
+            {"Name":"FIFA 17","Sales":218,"Region":"NA"},
+            {"Name":"Grand Theft Auto V","Sales":812,"Region":"NA"},
+            {"Name":"Fallout 4","Sales":503,"Region":"NA"},
+            {"Name":"FIFA 16","Sales":199,"Region":"NA"},
+            {"Name":"Star Wars Battlefront (2015)","Sales":572,"Region":"NA"},
+            {"Name":"Call of Duty: Advanced Warfare","Sales":491,"Region":"NA"},
+            {"Name":"Minecraft","Sales":327,"Region":"NA"},
+            {"Name":"FIFA 15","Sales":144,"Region":"NA"},
+            {"Name":"God of War (2018)","Sales":489,"Region":"NA"},
+            {"Name":"Call of Duty: Advanced Warfare","Sales":562,"Region":"NA"},
+            {"Name":"Final Fantasy XV","Sales":313,"Region":"NA"},
+            {"Name":"Fallout 4","Sales":508,"Region":"NA"},
+            {"Name":"Monster Hunter: World","Sales":178,"Region":"NA"},
+            {"Name":"Pokemon: Let's Go, Pikachu!","Sales":374,"Region":"NA"},
+            {"Name":"Overwatch","Sales":318,"Region":"NA"},
+            {"Name":"Star Wars Battlefront (2015)","Sales":431,"Region":"NA"},
+            {"Name":"Batman: Arkham Knight","Sales":285,"Region":"NA"},
+            {"Name":"Far Cry 4","Sales":204,"Region":"NA"},
+            {"Name":"NBA 2K16","Sales":443,"Region":"NA"},
+            {"Name":"Far Cry 5","Sales":249,"Region":"NA"},
+            {"Name":"Assassin's Creed Syndicate","Sales":156,"Region":"NA"},
+            {"Name":"NBA 2K17","Sales":394,"Region":"NA"},
+            {"Name":"The Elder Scrolls V: Skyrim Special Edition","Sales":215,"Region":"NA"},
+            {"Name":"NBA 2K18","Sales":368,"Region":"NA"},
+            {"Name":"Assassin's Creed Odyssey","Sales":204,"Region":"NA"},
+            {"Name":"Tom Clancy's Ghost Recon Wildlands","Sales":185,"Region":"NA"},
+            {"Name":"Mafia III","Sales":125,"Region":"NA"},
+            {"Name":"Far Cry: Primal","Sales":109,"Region":"NA"},
+            {"Name":"Pokemon: Let's Go, Eevee!","Sales":211,"Region":"NA"},
+            {"Name":"Need for Speed (2015)","Sales":102,"Region":"NA"},
+            {"Name":"Mario + Rabbids: Kingdom Battle","Sales":190,"Region":"NA"},
+            {"Name":"No Man's Sky","Sales":154,"Region":"NA"},
+            {"Name":"Need for Speed: Payback","Sales":108,"Region":"NA"},
+            {"Name":"Dragon Quest XI: Echoes of an Elusive Age","Sales":51,"Region":"NA"},
+            {"Name":"Just Cause 3","Sales":92,"Region":"NA"},
+            {"Name":"Minecraft","Sales":120,"Region":"NA"},
+            {"Name":"The Evil Within","Sales":97,"Region":"NA"},
+            {"Name":"Forza Horizon 4","Sales":128,"Region":"NA"},
+            {"Name":"Titanfall 2","Sales":130,"Region":"NA"},
+            {"Name":"Far Cry 4","Sales":147,"Region":"NA"},
+            {"Name":"The Order: 1886","Sales":76,"Region":"NA"},
+            {"Name":"Forza Motorsport 7","Sales":101,"Region":"NA"},
+            {"Name":"Minecraft","Sales":87,"Region":"NA"},
+            {"Name":"Wolfenstein II: The New Colossus","Sales":95,"Region":"NA"},
+            {"Name":"Fallout 76","Sales":90,"Region":"NA"},
+            {"Name":"The Last Guardian","Sales":70,"Region":"NA"},
+            {"Name":"Hyrule Warriors","Sales":102,"Region":"NA"},
+            {"Name":"Metal Gear Solid V: Ground Zeroes","Sales":63,"Region":"NA"},
+            {"Name":"Shadow of the Colossus","Sales":76,"Region":"NA"},
+            {"Name":"Sunset Overdrive","Sales":111,"Region":"NA"},
+            {"Name":"The Elder Scrolls V: Skyrim","Sales":116,"Region":"NA"},
+            {"Name":"Dragon Quest VIII: Journey of the Cursed King","Sales":25,"Region":"NA"},
+            {"Name":"Crash Bandicoot N. Sane Trilogy","Sales":76,"Region":"NA"},
+            {"Name":"FIFA 18","Sales":61,"Region":"NA"},
+            {"Name":"Disney Magic Castle: My Happy Life","Sales":30,"Region":"NA"},
+            {"Name":"Ni no Kuni II: Revenant Kingdom","Sales":57,"Region":"NA"},
+            {"Name":"Super Bomberman R","Sales":54,"Region":"NA"},
+            {"Name":"Paper Mario: Color Splash","Sales":61,"Region":"NA"},
+            {"Name":"Mario Party: Star Rush","Sales":44,"Region":"NA"},
+            {"Name":"Wii Fit U","Sales":61,"Region":"NA"},
+            {"Name":"Bayonetta 2","Sales":64,"Region":"NA"},
+            {"Name":"Xenoblade Chronicles X","Sales":59,"Region":"NA"},
+            {"Name":"The Crew 2","Sales":38,"Region":"NA"},
+            {"Name":"Professor Layton vs Ace Attorney","Sales":35,"Region":"NA"},
+            {"Name":"LEGO City Undercover","Sales":30,"Region":"NA"},
+            {"Name":"Fire Emblem Echoes: Shadows of Valentia","Sales":59,"Region":"NA"},
+            {"Name":"FIFA 19","Sales":32,"Region":"NA"},
+            {"Name":"Sonic Forces","Sales":68,"Region":"NA"},
+            {"Name":"Monster Hunter Generations Ultimate","Sales":47,"Region":"NA"},
+            {"Name":"Astro Bot Rescue Mission","Sales":38,"Region":"NA"},
+            {"Name":"The LEGO Movie Videogame","Sales":45,"Region":"NA"},
+            {"Name":"Plants vs Zombies: Garden Warfare","Sales":68,"Region":"NA"},
+            {"Name":"Monster Hunter Stories","Sales":25,"Region":"NA"},
+            {"Name":"The Evil Within","Sales":63,"Region":"NA"},
+            {"Name":"Fortnite","Sales":66,"Region":"NA"},
+            {"Name":"Mario Party: The Top 100","Sales":40,"Region":"NA"},
+            {"Name":"Diablo III: Eternal Collection","Sales":66,"Region":"NA"},
+            {"Name":"LEGO City Undercover","Sales":40,"Region":"NA"},
+            {"Name":"LEGO The Incredibles","Sales":61,"Region":"NA"},
+            {"Name":"Final Fantasy Explorers","Sales":30,"Region":"NA"},
+            {"Name":"LEGO Worlds","Sales":37,"Region":"NA"},
+            {"Name":"Kirby and the Rainbow Curse","Sales":45,"Region":"NA"},
+            {"Name":"Disney Magic World 2","Sales":13,"Region":"NA"},
+            {"Name":"Bayonetta 2","Sales":45,"Region":"NA"},
+            {"Name":"Ultra Street Fighter II: The Final Challengers","Sales":38,"Region":"NA"},
+            {"Name":"Everybody's Golf","Sales":21,"Region":"NA"},
+            {"Name":"Xenoblade Chronicles","Sales":42,"Region":"NA"},
+            {"Name":"Puzzle & Dragons Z + Super Mario Bros. Edition","Sales":16,"Region":"NA"},
+            {"Name":"Metroid: Samus Returns","Sales":52,"Region":"NA"},
+            {"Name":"Bravely Second: End Layer","Sales":38,"Region":"NA"},
+            {"Name":"Poochy & Yoshi's Woolly World","Sales":35,"Region":"NA"},
+            {"Name":"Puyo Puyo Tetris","Sales":38,"Region":"NA"},
+            {"Name":"Dragon Ball: Xenoverse 2","Sales":30,"Region":"NA"},
+            {"Name":"Mario Tennis Ultra Smash","Sales":28,"Region":"NA"},
+            {"Name":"Dragon Ball: Fusions","Sales":30,"Region":"NA"},
+            {"Name":"Fire Emblem Warriors","Sales":38,"Region":"NA"},
+            {"Name":"Pokemon Art Academy","Sales":32,"Region":"NA"},
+            {"Name":"Story of Seasons: Trio of Towns","Sales":33,"Region":"NA"},
+            {"Name":"Mario Golf: World Tour","Sales":25,"Region":"NA"},
+            {"Name":"Animal Crossing: Amiibo Festival","Sales":40,"Region":"NA"},
+            {"Name":"Luigi's Mansion","Sales":33,"Region":"NA"},
+            {"Name":"Detective Pikachu","Sales":26,"Region":"NA"},
+            {"Name":"Knack 2","Sales":25,"Region":"NA"},
+            {"Name":"Sonic Mania","Sales":40,"Region":"NA"},
+            {"Name":"Mario Sports Superstars","Sales":32,"Region":"NA"},
+            {"Name":"Hyrule Warriors: Definitive Edition","Sales":37,"Region":"NA"},
+            {"Name":"Hey! Pikmin","Sales":30,"Region":"NA"},
+            {"Name":"Star Fox: Zero","Sales":35,"Region":"NA"},
+            {"Name":"Dragon Ball FighterZ","Sales":37,"Region":"NA"},
+            {"Name":"NBA 2K18","Sales":52,"Region":"NA"},
+            {"Name":"Doom (2016)","Sales":42,"Region":"NA"},
+            {"Name":"Nintendo Labo: Toy-Con 03 Vehicle Kit","Sales":28,"Region":"NA"},
+            {"Name":"Wii Sports Club","Sales":30,"Region":"NA"},
+            {"Name":"Hatsune Miku: Project Mirai DX","Sales":35,"Region":"NA"},
+            {"Name":"Burnout Paradise Remastered","Sales":14,"Region":"NA"},
+            {"Name":"Shin Megami Tensei IV: Apocalypse","Sales":26,"Region":"NA"},
+            {"Name":"Nintendo Labo: Toy-Con 02 Robot Kit","Sales":32,"Region":"NA"},
+            {"Name":"Dragon Ball Z: Extreme Butoden","Sales":23,"Region":"NA"},
+            {"Name":"Dead or Alive 5 Last Round","Sales":16,"Region":"NA"},
+            {"Name":"Disgaea 5 Complete","Sales":26,"Region":"NA"},
+            {"Name":"Kirby: Battle Royale","Sales":13,"Region":"NA"},
+            {"Name":"Tokyo Mirage Sessions #FE","Sales":30,"Region":"NA"},
+            {"Name":"Dark Souls: Remastered","Sales":28,"Region":"NA"},
+            {"Name":"Chibi-Robo! Zip Lash","Sales":25,"Region":"NA"},
+            {"Name":"Monopoly for Nintendo Switch","Sales":11,"Region":"NA"},
+            {"Name":"Naruto to Boruto: Shinobi Striker","Sales":33,"Region":"NA"},
+            {"Name":"Overcooked! 2","Sales":30,"Region":"NA"},
+            {"Name":"The Legend of Legacy","Sales":25,"Region":"NA"},
+            {"Name":"Ever Oasis","Sales":23,"Region":"NA"},
+            {"Name":"WarioWare Gold","Sales":19,"Region":"NA"},
+            {"Name":"Etrian Mystery Dungeon","Sales":19,"Region":"NA"},
+            {"Name":"Etrian Odyssey V: Beyond the Myth","Sales":19,"Region":"NA"},
+            {"Name":"The World Ends with You: Final Remix","Sales":25,"Region":"NA"},
+            {"Name":"Stella Glow","Sales":30,"Region":"NA"},
+            {"Name":"Sonic Boom: Fire & Ice","Sales":25,"Region":"NA"},
+            {"Name":"Sid Meier's Civilization VI","Sales":21,"Region":"NA"},
+            {"Name":"7th Dragon III Code: VFD","Sales":11,"Region":"NA"},
+            {"Name":"Attack on Titan 2","Sales":21,"Region":"NA"},
+            {"Name":"Code Name: S.T.E.A.M.","Sales":25,"Region":"NA"},
+            {"Name":"Attack on Titan 2","Sales":16,"Region":"NA"},
+            {"Name":"Life Is Strange: Before the Storm","Sales":19,"Region":"NA"},
+            {"Name":"Dragon Quest Builders: Revive Alefgard","Sales":13,"Region":"NA"},
+            {"Name":"Fate/Extella: The Umbral Star","Sales":18,"Region":"NA"},
+            {"Name":"Radiant Historia: Perfect Chronology","Sales":19,"Region":"NA"},
+            {"Name":"Valkyria Chronicles 4","Sales":21,"Region":"NA"},
+            {"Name":"Project X Zone 2","Sales":11,"Region":"NA"},
+            {"Name":"Captain Toad: Treasure Tracker","Sales":11,"Region":"NA"},
+            {"Name":"Street Fighter 30th Anniversary Collection","Sales":21,"Region":"NA"},
+            {"Name":"Resident Evil: Revelations","Sales":11,"Region":"NA"},
+            {"Name":"Xenoblade Chronicles 2: Torna ~ The Golden Country","Sales":14,"Region":"NA"},
+            {"Name":"Gravity Rush Remastered","Sales":4,"Region":"NA"},
+            {"Name":"Gear.Club Unlimited","Sales":18,"Region":"NA"},
+            {"Name":"Metroid Prime: Federation Force","Sales":14,"Region":"NA"},
+            {"Name":"Rodea the Sky Soldier","Sales":18,"Region":"NA"},
+            {"Name":"Ys VIII: Lacrimosa of Dana","Sales":6,"Region":"NA"},
+            {"Name":"Dead or Alive 5 Last Round","Sales":9,"Region":"NA"},
+            {"Name":"Sushi Striker: The Way of Sushido","Sales":4,"Region":"NA"},
+            {"Name":"BlazBlue: Cross Tag Battle","Sales":7,"Region":"NA"},
+            {"Name":"RPG Maker: Fes","Sales":6,"Region":"NA"},
+            {"Name":"Disgaea 1 Complete","Sales":6,"Region":"NA"}]
+    };
+
+    var diameter = 1000; //set size of overall chart
+    var color = d3.scaleOrdinal()
+        .range(["#8da0cb"]);
+
+    var bubble = d3.pack(dataset) //loading data into D3's bubble functions
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var svg = d3.select("#bubbleNA")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+    var nodes = d3.hierarchy(dataset)
+        .sum(function(d) { return d.Sales; });
+
+    var node = svg.selectAll(".node")
+        .data(bubble(nodes).descendants())
+        .enter()
+        .filter(function(d){
+            return  !d.children
+        })
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+    node.append("title")
+        .text(function(d) {
+            return d.data.Name + ": " + formatNumber((d.data.Sales)*5790) + " Million Copies ("  + d.data.Sales+ " copies per 100 000)";
+        });
+
+    node.append("circle")
+        .attr("r", function(d) {
+            return d.r;
+        })
+        .style("fill", function(d,i) {
+            return color(i);
+        });
+
+    node.append("text") //text for game title
+        .attr("dy", ".2em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+            return d.data.Name.substring(0, d.r / 3);
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", function(d){
+            return d.r/6;
+        })
+        .attr("fill", "white");
+
+    // node.append("text") //text for amount of sales
+    //     .attr("dy", "1.3em")
+    //     .style("text-anchor", "middle")
+    //     .text(function(d) {
+    //         return d.data.Sales;
+    //     })
+    //     .attr("font-family",  "Gill Sans", "Gill Sans MT")
+    //     .attr("font-size", function(d){
+    //         return d.r/4;
+    //     })
+    //     .attr("fill", "white");
+
+    d3.select(self.frameElement)
+        .style("height", diameter + "px");
+ 
+    // Set Up Tool-tip
+    var tooltip = node.append("g")
+        .attr("class", "tooltip")
+        .style("display", "none");
+
+    tooltip.append("rect")
+        .attr("width", 80)
+        .attr("height", 20)
+        .attr("fill", "white")
+        .style("opacity", 0.5);
+
+    tooltip.append("text")
+        .attr("x", 40)
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold");
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    dataset = {
+        "children": [{"Name":"Grand Theft Auto V","Sales":472,"Region":"JPN"},
+            {"Name":"Red Dead Redemption 2","Sales":165,"Region":"JPN"},
+            {"Name":"Call of Duty: WWII","Sales":315,"Region":"JPN"},
+            {"Name":"FIFA 18","Sales":118,"Region":"JPN"},
+            {"Name":"FIFA 17","Sales":94,"Region":"JPN"},
+            {"Name":"Grand Theft Auto V","Sales":8,"Region":"JPN"},
+            {"Name":"Fallout 4","Sales":213,"Region":"JPN"},
+            {"Name":"FIFA 16","Sales":55,"Region":"JPN"},
+            {"Name":"Star Wars Battlefront (2015)","Sales":181,"Region":"JPN"},
+            {"Name":"Call of Duty: Advanced Warfare","Sales":110,"Region":"JPN"},
+            {"Name":"Minecraft","Sales":276,"Region":"JPN"},
+            {"Name":"FIFA 15","Sales":39,"Region":"JPN"},
+            {"Name":"God of War (2018)","Sales":102,"Region":"JPN"},
+            {"Name":"Call of Duty: Advanced Warfare","Sales":8,"Region":"JPN"},
+            {"Name":"Final Fantasy XV","Sales":827,"Region":"JPN"},
+            {"Name":"Fallout 4","Sales":16,"Region":"JPN"},
+            {"Name":"Monster Hunter: World","Sales":1709,"Region":"JPN"},
+            {"Name":"Pokemon: Let's Go, Pikachu!","Sales":646,"Region":"JPN"},
+            {"Name":"Overwatch","Sales":134,"Region":"JPN"},
+            {"Name":"Star Wars Battlefront (2015)","Sales":16,"Region":"JPN"},
+            {"Name":"Batman: Arkham Knight","Sales":87,"Region":"JPN"},
+            {"Name":"Far Cry 4","Sales":87,"Region":"JPN"},
+            {"Name":"NBA 2K16","Sales":39,"Region":"JPN"},
+            {"Name":"Far Cry 5","Sales":118,"Region":"JPN"},
+            {"Name":"Assassin's Creed Syndicate","Sales":63,"Region":"JPN"},
+            {"Name":"NBA 2K17","Sales":24,"Region":"JPN"},
+            {"Name":"The Elder Scrolls V: Skyrim Special Edition","Sales":63,"Region":"JPN"},
+            {"Name":"NBA 2K18","Sales":31,"Region":"JPN"},
+            {"Name":"Assassin's Creed Odyssey","Sales":71,"Region":"JPN"},
+            {"Name":"Tom Clancy's Ghost Recon Wildlands","Sales":173,"Region":"JPN"},
+            {"Name":"Mafia III","Sales":31,"Region":"JPN"},
+            {"Name":"Far Cry: Primal","Sales":55,"Region":"JPN"},
+            {"Name":"Pokemon: Let's Go, Eevee!","Sales":402,"Region":"JPN"},
+            {"Name":"Need for Speed (2015)","Sales":47,"Region":"JPN"},
+            {"Name":"Mario + Rabbids: Kingdom Battle","Sales":173,"Region":"JPN"},
+            {"Name":"No Man's Sky","Sales":31,"Region":"JPN"},
+            {"Name":"Need for Speed: Payback","Sales":31,"Region":"JPN"},
+            {"Name":"Dragon Quest XI: Echoes of an Elusive Age","Sales":1126,"Region":"JPN"},
+            {"Name":"Just Cause 3","Sales":71,"Region":"JPN"},
+            {"Name":"Minecraft","Sales":409,"Region":"JPN"},
+            {"Name":"The Evil Within","Sales":87,"Region":"JPN"},
+            {"Name":"Forza Horizon 4","Sales":8,"Region":"JPN"},
+            {"Name":"Titanfall 2","Sales":47,"Region":"JPN"},
+            {"Name":"Far Cry 4","Sales":16,"Region":"JPN"},
+            {"Name":"The Order: 1886","Sales":55,"Region":"JPN"},
+            {"Name":"Forza Motorsport 7","Sales":8,"Region":"JPN"},
+            {"Name":"Minecraft","Sales":299,"Region":"JPN"},
+            {"Name":"Wolfenstein II: The New Colossus","Sales":8,"Region":"JPN"},
+            {"Name":"Fallout 76","Sales":79,"Region":"JPN"},
+            {"Name":"The Last Guardian","Sales":102,"Region":"JPN"},
+            {"Name":"Hyrule Warriors","Sales":102,"Region":"JPN"},
+            {"Name":"Metal Gear Solid V: Ground Zeroes","Sales":134,"Region":"JPN"},
+            {"Name":"Shadow of the Colossus","Sales":39,"Region":"JPN"},
+            {"Name":"Sunset Overdrive","Sales":0,"Region":"JPN"},
+            {"Name":"The Elder Scrolls V: Skyrim","Sales":47,"Region":"JPN"},
+            {"Name":"Dragon Quest VIII: Journey of the Cursed King","Sales":693,"Region":"JPN"},
+            {"Name":"Crash Bandicoot N. Sane Trilogy","Sales":16,"Region":"JPN"},
+            {"Name":"FIFA 18","Sales":102,"Region":"JPN"},
+            {"Name":"Disney Magic Castle: My Happy Life","Sales":417,"Region":"JPN"},
+            {"Name":"Ni no Kuni II: Revenant Kingdom","Sales":94,"Region":"JPN"},
+            {"Name":"Super Bomberman R","Sales":150,"Region":"JPN"},
+            {"Name":"Paper Mario: Color Splash","Sales":63,"Region":"JPN"},
+            {"Name":"Mario Party: Star Rush","Sales":157,"Region":"JPN"},
+            {"Name":"Wii Fit U","Sales":165,"Region":"JPN"},
+            {"Name":"Bayonetta 2","Sales":79,"Region":"JPN"},
+            {"Name":"Xenoblade Chronicles X","Sales":118,"Region":"JPN"},
+            {"Name":"The Crew 2","Sales":39,"Region":"JPN"},
+            {"Name":"Professor Layton vs Ace Attorney","Sales":236,"Region":"JPN"},
+            {"Name":"LEGO City Undercover","Sales":8,"Region":"JPN"},
+            {"Name":"Fire Emblem Echoes: Shadows of Valentia","Sales":165,"Region":"JPN"},
+            {"Name":"FIFA 19","Sales":47,"Region":"JPN"},
+            {"Name":"Sonic Forces","Sales":8,"Region":"JPN"},
+            {"Name":"Monster Hunter Generations Ultimate","Sales":213,"Region":"JPN"},
+            {"Name":"Astro Bot Rescue Mission","Sales":16,"Region":"JPN"},
+            {"Name":"The LEGO Movie Videogame","Sales":8,"Region":"JPN"},
+            {"Name":"Plants vs Zombies: Garden Warfare","Sales":0,"Region":"JPN"},
+            {"Name":"Monster Hunter Stories","Sales":307,"Region":"JPN"},
+            {"Name":"The Evil Within","Sales":0,"Region":"JPN"},
+            {"Name":"Fortnite","Sales":8,"Region":"JPN"},
+            {"Name":"Mario Party: The Top 100","Sales":189,"Region":"JPN"},
+            {"Name":"Diablo III: Eternal Collection","Sales":8,"Region":"JPN"},
+            {"Name":"LEGO City Undercover","Sales":24,"Region":"JPN"},
+            {"Name":"LEGO The Incredibles","Sales":8,"Region":"JPN"},
+            {"Name":"Final Fantasy Explorers","Sales":228,"Region":"JPN"},
+            {"Name":"LEGO Worlds","Sales":0,"Region":"JPN"},
+            {"Name":"Kirby and the Rainbow Curse","Sales":102,"Region":"JPN"},
+            {"Name":"Disney Magic World 2","Sales":181,"Region":"JPN"},
+            {"Name":"Bayonetta 2","Sales":55,"Region":"JPN"},
+            {"Name":"Ultra Street Fighter II: The Final Challengers","Sales":71,"Region":"JPN"},
+            {"Name":"Everybody's Golf","Sales":134,"Region":"JPN"},
+            {"Name":"Xenoblade Chronicles","Sales":102,"Region":"JPN"},
+            {"Name":"Puzzle & Dragons Z + Super Mario Bros. Edition","Sales":276,"Region":"JPN"},
+            {"Name":"Metroid: Samus Returns","Sales":55,"Region":"JPN"},
+            {"Name":"Bravely Second: End Layer","Sales":157,"Region":"JPN"},
+            {"Name":"Poochy & Yoshi's Woolly World","Sales":134,"Region":"JPN"},
+            {"Name":"Puyo Puyo Tetris","Sales":94,"Region":"JPN"},
+            {"Name":"Dragon Ball: Xenoverse 2","Sales":150,"Region":"JPN"},
+            {"Name":"Mario Tennis Ultra Smash","Sales":118,"Region":"JPN"},
+            {"Name":"Dragon Ball: Fusions","Sales":189,"Region":"JPN"},
+            {"Name":"Fire Emblem Warriors","Sales":79,"Region":"JPN"},
+            {"Name":"Pokemon Art Academy","Sales":134,"Region":"JPN"},
+            {"Name":"Story of Seasons: Trio of Towns","Sales":173,"Region":"JPN"},
+            {"Name":"Mario Golf: World Tour","Sales":142,"Region":"JPN"},
+            {"Name":"Animal Crossing: Amiibo Festival","Sales":79,"Region":"JPN"},
+            {"Name":"Luigi's Mansion","Sales":71,"Region":"JPN"},
+            {"Name":"Detective Pikachu","Sales":94,"Region":"JPN"},
+            {"Name":"Knack 2","Sales":8,"Region":"JPN"},
+            {"Name":"Sonic Mania","Sales":8,"Region":"JPN"},
+            {"Name":"Mario Sports Superstars","Sales":102,"Region":"JPN"},
+            {"Name":"Hyrule Warriors: Definitive Edition","Sales":55,"Region":"JPN"},
+            {"Name":"Hey! Pikmin","Sales":134,"Region":"JPN"},
+            {"Name":"Star Fox: Zero","Sales":71,"Region":"JPN"},
+            {"Name":"Dragon Ball FighterZ","Sales":55,"Region":"JPN"},
+            {"Name":"NBA 2K18","Sales":24,"Region":"JPN"},
+            {"Name":"Doom (2016)","Sales":8,"Region":"JPN"},
+            {"Name":"Nintendo Labo: Toy-Con 03 Vehicle Kit","Sales":47,"Region":"JPN"},
+            {"Name":"Wii Sports Club","Sales":31,"Region":"JPN"},
+            {"Name":"Hatsune Miku: Project Mirai DX","Sales":87,"Region":"JPN"},
+            {"Name":"Burnout Paradise Remastered","Sales":8,"Region":"JPN"},
+            {"Name":"Shin Megami Tensei IV: Apocalypse","Sales":126,"Region":"JPN"},
+            {"Name":"Nintendo Labo: Toy-Con 02 Robot Kit","Sales":63,"Region":"JPN"},
+            {"Name":"Dragon Ball Z: Extreme Butoden","Sales":134,"Region":"JPN"},
+            {"Name":"Dead or Alive 5 Last Round","Sales":71,"Region":"JPN"},
+            {"Name":"Disgaea 5 Complete","Sales":39,"Region":"JPN"},
+            {"Name":"Kirby: Battle Royale","Sales":157,"Region":"JPN"},
+            {"Name":"Tokyo Mirage Sessions #FE","Sales":63,"Region":"JPN"},
+            {"Name":"Dark Souls: Remastered","Sales":24,"Region":"JPN"},
+            {"Name":"Chibi-Robo! Zip Lash","Sales":55,"Region":"JPN"},
+            {"Name":"Monopoly for Nintendo Switch","Sales":8,"Region":"JPN"},
+            {"Name":"Naruto to Boruto: Shinobi Striker","Sales":16,"Region":"JPN"},
+            {"Name":"Overcooked! 2","Sales":8,"Region":"JPN"},
+            {"Name":"The Legend of Legacy","Sales":87,"Region":"JPN"},
+            {"Name":"Ever Oasis","Sales":39,"Region":"JPN"},
+            {"Name":"WarioWare Gold","Sales":102,"Region":"JPN"},
+            {"Name":"Etrian Mystery Dungeon","Sales":110,"Region":"JPN"},
+            {"Name":"Etrian Odyssey V: Beyond the Myth","Sales":110,"Region":"JPN"},
+            {"Name":"The World Ends with You: Final Remix","Sales":24,"Region":"JPN"},
+            {"Name":"Stella Glow","Sales":47,"Region":"JPN"},
+            {"Name":"Sonic Boom: Fire & Ice","Sales":16,"Region":"JPN"},
+            {"Name":"Sid Meier's Civilization VI","Sales":8,"Region":"JPN"},
+            {"Name":"7th Dragon III Code: VFD","Sales":102,"Region":"JPN"},
+            {"Name":"Attack on Titan 2","Sales":63,"Region":"JPN"},
+            {"Name":"Code Name: S.T.E.A.M.","Sales":16,"Region":"JPN"},
+            {"Name":"Attack on Titan 2","Sales":47,"Region":"JPN"},
+            {"Name":"Life Is Strange: Before the Storm","Sales":16,"Region":"JPN"},
+            {"Name":"Dragon Quest Builders: Revive Alefgard","Sales":55,"Region":"JPN"},
+            {"Name":"Fate/Extella: The Umbral Star","Sales":31,"Region":"JPN"},
+            {"Name":"Radiant Historia: Perfect Chronology","Sales":47,"Region":"JPN"},
+            {"Name":"Valkyria Chronicles 4","Sales":16,"Region":"JPN"},
+            {"Name":"Project X Zone 2","Sales":71,"Region":"JPN"},
+            {"Name":"Captain Toad: Treasure Tracker","Sales":63,"Region":"JPN"},
+            {"Name":"Street Fighter 30th Anniversary Collection","Sales":8,"Region":"JPN"},
+            {"Name":"Resident Evil: Revelations","Sales":31,"Region":"JPN"},
+            {"Name":"Xenoblade Chronicles 2: Torna ~ The Golden Country","Sales":16,"Region":"JPN"},
+            {"Name":"Gravity Rush Remastered","Sales":39,"Region":"JPN"},
+            {"Name":"Gear.Club Unlimited","Sales":8,"Region":"JPN"},
+            {"Name":"Metroid Prime: Federation Force","Sales":24,"Region":"JPN"},
+            {"Name":"Rodea the Sky Soldier","Sales":8,"Region":"JPN"},
+            {"Name":"Ys VIII: Lacrimosa of Dana","Sales":24,"Region":"JPN"},
+            {"Name":"Dead or Alive 5 Last Round","Sales":8,"Region":"JPN"},
+            {"Name":"Sushi Striker: The Way of Sushido","Sales":24,"Region":"JPN"},
+            {"Name":"BlazBlue: Cross Tag Battle","Sales":8,"Region":"JPN"},
+            {"Name":"RPG Maker: Fes","Sales":16,"Region":"JPN"},
+            {"Name":"Disgaea 1 Complete","Sales":8,"Region":"JPN"}]
+    };
+
+    var diameter = 1000;
+    var color = d3.scaleOrdinal()
+        .range(["#FF6347"]);
+
+    var bubble = d3.pack(dataset)
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var svg = d3.select("#bubbleJapan")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+
+    var nodes = d3.hierarchy(dataset)
+        .sum(function(d) { return d.Sales; });
+
+    var node = svg.selectAll(".node")
+        .data(bubble(nodes).descendants())
+        .enter()
+        .filter(function(d){
+            return  !d.children
+        })
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+    // node.append("title")
+    //     .text(function(d) {
+    //         return d.Name + ": " + d.Sales;
+    //     });
+
+    node.append("circle")
+        .attr("r", function(d) {
+            return d.r;
+        })
+        .style("fill", function(d,i) {
+            return color(i);
+        });
+
+    node.append("text")
+        .attr("dy", ".2em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+            return d.data.Name.substring(0, d.r / 3);
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", function(d){
+            return d.r/6;
+        })
+        .attr("fill", "white");
+    node.append("title")
+            .text(function(d) {
+                return d.data.Name + ": " + formatNumber((d.data.Sales)*1270) + " Million Copies ("  + d.data.Sales+ " copies per 100 000)";
+        });
+
+
+    d3.select(self.frameElement)
+        .style("height", diameter + "px");
+
+
+
+</script>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<h2 style="text-align: center;">Best Selling Games by Region (per Total Sales)</h2>
+<div style="position: relative; width: 2000px; left:-625px;">
+        <div width="1000" height="1000"style="float: left;">
+            <svg id="bubbleNA" width="1000" height="1000"></svg>
+        </div>
+        <div width="1000"  height="100"style="float: right;">
+            <svg id="bubbleJapan" width="1000" height="1000"></svg>
+        </div>
+</div>
+<!–– code based on code from: https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168 -->
+<script type="text/javascript">
+
+    dataset = {
+        "children": [{"Name":"Grand Theft Auto V","NASales":6.06},
+            {"Name":"Red Dead Redemption 2","NASales":5.26},
+            {"Name":"Call of Duty: WWII","NASales":4.67},
+            {"Name":"FIFA 18","NASales":1.27},
+            {"Name":"FIFA 17","NASales":1.26},
+            {"Name":"Grand Theft Auto V","NASales":4.7},
+            {"Name":"Fallout 4","NASales":2.91},
+            {"Name":"FIFA 16","NASales":1.15},
+            {"Name":"Star Wars Battlefront (2015)","NASales":3.31},
+            {"Name":"Call of Duty: Advanced Warfare","NASales":2.84},
+            {"Name":"Minecraft","NASales":1.89},
+            {"Name":"FIFA 15","NASales":0.83},
+            {"Name":"God of War (2018)","NASales":2.83},
+            {"Name":"Call of Duty: Advanced Warfare","NASales":3.25},
+            {"Name":"Final Fantasy XV","NASales":1.81},
+            {"Name":"Fallout 4","NASales":2.94},
+            {"Name":"Monster Hunter: World","NASales":1.03},
+            {"Name":"Pokemon: Let's Go, Pikachu!","NASales":2.16},
+            {"Name":"Overwatch","NASales":1.84},
+            {"Name":"Star Wars Battlefront (2015)","NASales":2.49},
+            {"Name":"Batman: Arkham Knight","NASales":1.65},
+            {"Name":"Far Cry 4","NASales":1.18},
+            {"Name":"NBA 2K16","NASales":2.56},
+            {"Name":"Far Cry 5","NASales":1.44},
+            {"Name":"Assassin's Creed Syndicate","NASales":0.9},
+            {"Name":"NBA 2K17","NASales":2.28},
+            {"Name":"The Elder Scrolls V: Skyrim Special Edition","NASales":1.24},
+            {"Name":"NBA 2K18","NASales":2.13},
+            {"Name":"Assassin's Creed Odyssey","NASales":1.18},
+            {"Name":"Tom Clancy's Ghost Recon Wildlands","NASales":1.07},
+            {"Name":"Mafia III","NASales":0.72},
+            {"Name":"Far Cry: Primal","NASales":0.63},
+            {"Name":"Pokemon: Let's Go, Eevee!","NASales":1.22},
+            {"Name":"Need for Speed (2015)","NASales":0.59},
+            {"Name":"Mario + Rabbids: Kingdom Battle","NASales":1.1},
+            {"Name":"No Man's Sky","NASales":0.89},
+            {"Name":"Need for Speed: Payback","NASales":0.62},
+            {"Name":"Dragon Quest XI: Echoes of an Elusive Age","NASales":0.29},
+            {"Name":"Just Cause 3","NASales":0.53},
+            {"Name":"Minecraft","NASales":0.69},
+            {"Name":"The Evil Within","NASales":0.56},
+            {"Name":"Forza Horizon 4","NASales":0.74},
+            {"Name":"Titanfall 2","NASales":0.75},
+            {"Name":"Far Cry 4","NASales":0.85},
+            {"Name":"The Order: 1886","NASales":0.44},
+            {"Name":"Forza Motorsport 7","NASales":0.58},
+            {"Name":"Minecraft","NASales":0.5},
+            {"Name":"Wolfenstein II: The New Colossus","NASales":0.55},
+            {"Name":"Fallout 76","NASales":0.52},
+            {"Name":"The Last Guardian","NASales":0.4},
+            {"Name":"Hyrule Warriors","NASales":0.59},
+            {"Name":"Metal Gear Solid V: Ground Zeroes","NASales":0.36},
+            {"Name":"Shadow of the Colossus","NASales":0.44},
+            {"Name":"Sunset Overdrive","NASales":0.64},
+            {"Name":"The Elder Scrolls V: Skyrim","NASales":0.67},
+            {"Name":"Dragon Quest VIII: Journey of the Cursed King","NASales":0.14},
+            {"Name":"Crash Bandicoot N. Sane Trilogy","NASales":0.44},
+            {"Name":"FIFA 18","NASales":0.35},
+            {"Name":"Disney Magic Castle: My Happy Life","NASales":0.17},
+            {"Name":"Ni no Kuni II: Revenant Kingdom","NASales":0.33},
+            {"Name":"Super Bomberman R","NASales":0.31},
+            {"Name":"Paper Mario: Color Splash","NASales":0.35},
+            {"Name":"Mario Party: Star Rush","NASales":0.25},
+            {"Name":"Wii Fit U","NASales":0.35},
+            {"Name":"Bayonetta 2","NASales":0.37},
+            {"Name":"Xenoblade Chronicles X","NASales":0.34},
+            {"Name":"The Crew 2","NASales":0.22},
+            {"Name":"Professor Layton vs Ace Attorney","NASales":0.2},
+            {"Name":"LEGO City Undercover","NASales":0.17},
+            {"Name":"Fire Emblem Echoes: Shadows of Valentia","NASales":0.34},
+            {"Name":"FIFA 19","NASales":0.18},
+            {"Name":"Sonic Forces","NASales":0.39},
+            {"Name":"Monster Hunter Generations Ultimate","NASales":0.27},
+            {"Name":"Astro Bot Rescue Mission","NASales":0.22},
+            {"Name":"The LEGO Movie Videogame","NASales":0.26},
+            {"Name":"Plants vs Zombies: Garden Warfare","NASales":0.39},
+            {"Name":"Monster Hunter Stories","NASales":0.14},
+            {"Name":"The Evil Within","NASales":0.36},
+            {"Name":"Fortnite","NASales":0.38},
+            {"Name":"Mario Party: The Top 100","NASales":0.23},
+            {"Name":"Diablo III: Eternal Collection","NASales":0.38},
+            {"Name":"LEGO City Undercover","NASales":0.23},
+            {"Name":"LEGO The Incredibles","NASales":0.35},
+            {"Name":"Final Fantasy Explorers","NASales":0.17},
+            {"Name":"LEGO Worlds","NASales":0.21},
+            {"Name":"Kirby and the Rainbow Curse","NASales":0.26},
+            {"Name":"Disney Magic World 2","NASales":0.07},
+            {"Name":"Bayonetta 2","NASales":0.26},
+            {"Name":"Ultra Street Fighter II: The Final Challengers","NASales":0.22},
+            {"Name":"Everybody's Golf","NASales":0.12},
+            {"Name":"Xenoblade Chronicles","NASales":0.24},
+            {"Name":"Puzzle & Dragons Z + Super Mario Bros. Edition","NASales":0.09},
+            {"Name":"Metroid: Samus Returns","NASales":0.3},
+            {"Name":"Bravely Second: End Layer","NASales":0.22},
+            {"Name":"Poochy & Yoshi's Woolly World","NASales":0.2},
+            {"Name":"Puyo Puyo Tetris","NASales":0.22},
+            {"Name":"Dragon Ball: Xenoverse 2","NASales":0.17},
+            {"Name":"Mario Tennis Ultra Smash","NASales":0.16},
+            {"Name":"Dragon Ball: Fusions","NASales":0.17},
+            {"Name":"Fire Emblem Warriors","NASales":0.22},
+            {"Name":"Pokemon Art Academy","NASales":0.18},
+            {"Name":"Story of Seasons: Trio of Towns","NASales":0.19},
+            {"Name":"Mario Golf: World Tour","NASales":0.14},
+            {"Name":"Animal Crossing: Amiibo Festival","NASales":0.23},
+            {"Name":"Luigi's Mansion","NASales":0.19},
+            {"Name":"Detective Pikachu","NASales":0.15},
+            {"Name":"Knack 2","NASales":0.14},
+            {"Name":"Sonic Mania","NASales":0.23},
+            {"Name":"Mario Sports Superstars","NASales":0.18},
+            {"Name":"Hyrule Warriors: Definitive Edition","NASales":0.21},
+            {"Name":"Hey! Pikmin","NASales":0.17},
+            {"Name":"Star Fox: Zero","NASales":0.2},
+            {"Name":"Dragon Ball FighterZ","NASales":0.21},
+            {"Name":"NBA 2K18","NASales":0.3},
+            {"Name":"Doom (2016)","NASales":0.24},
+            {"Name":"Nintendo Labo: Toy-Con 03 Vehicle Kit","NASales":0.16},
+            {"Name":"Wii Sports Club","NASales":0.17},
+            {"Name":"Hatsune Miku: Project Mirai DX","NASales":0.2},
+            {"Name":"Burnout Paradise Remastered","NASales":0.08},
+            {"Name":"Shin Megami Tensei IV: Apocalypse","NASales":0.15},
+            {"Name":"Nintendo Labo: Toy-Con 02 Robot Kit","NASales":0.18},
+            {"Name":"Dragon Ball Z: Extreme Butoden","NASales":0.13},
+            {"Name":"Dead or Alive 5 Last Round","NASales":0.09},
+            {"Name":"Disgaea 5 Complete","NASales":0.15},
+            {"Name":"Kirby: Battle Royale","NASales":0.07},
+            {"Name":"Tokyo Mirage Sessions #FE","NASales":0.17},
+            {"Name":"Dark Souls: Remastered","NASales":0.16},
+            {"Name":"Chibi-Robo! Zip Lash","NASales":0.14},
+            {"Name":"Monopoly for Nintendo Switch","NASales":0.06},
+            {"Name":"Naruto to Boruto: Shinobi Striker","NASales":0.19},
+            {"Name":"Overcooked! 2","NASales":0.17},
+            {"Name":"The Legend of Legacy","NASales":0.14},
+            {"Name":"Ever Oasis","NASales":0.13},
+            {"Name":"WarioWare Gold","NASales":0.11},
+            {"Name":"Etrian Mystery Dungeon","NASales":0.11},
+            {"Name":"Etrian Odyssey V: Beyond the Myth","NASales":0.11},
+            {"Name":"The World Ends with You: Final Remix","NASales":0.14},
+            {"Name":"Stella Glow","NASales":0.17},
+            {"Name":"Sonic Boom: Fire & Ice","NASales":0.14},
+            {"Name":"Sid Meier's Civilization VI","NASales":0.12},
+            {"Name":"7th Dragon III Code: VFD","NASales":0.06},
+            {"Name":"Attack on Titan 2","NASales":0.12},
+            {"Name":"Code Name: S.T.E.A.M.","NASales":0.14},
+            {"Name":"Attack on Titan 2","NASales":0.09},
+            {"Name":"Life Is Strange: Before the Storm","NASales":0.11},
+            {"Name":"Dragon Quest Builders: Revive Alefgard","NASales":0.07},
+            {"Name":"Fate/Extella: The Umbral Star","NASales":0.1},
+            {"Name":"Radiant Historia: Perfect Chronology","NASales":0.11},
+            {"Name":"Valkyria Chronicles 4","NASales":0.12},
+            {"Name":"Project X Zone 2","NASales":0.06},
+            {"Name":"Captain Toad: Treasure Tracker","NASales":0.06},
+            {"Name":"Street Fighter 30th Anniversary Collection","NASales":0.12},
+            {"Name":"Resident Evil: Revelations","NASales":0.06},
+            {"Name":"Xenoblade Chronicles 2: Torna ~ The Golden Country","NASales":0.08},
+            {"Name":"Gravity Rush Remastered","NASales":0.02},
+            {"Name":"Gear.Club Unlimited","NASales":0.1},
+            {"Name":"Metroid Prime: Federation Force","NASales":0.08},
+            {"Name":"Rodea the Sky Soldier","NASales":0.1},
+            {"Name":"Ys VIII: Lacrimosa of Dana","NASales":0.03},
+            {"Name":"Dead or Alive 5 Last Round","NASales":0.05},
+            {"Name":"Sushi Striker: The Way of Sushido","NASales":0.02},
+            {"Name":"BlazBlue: Cross Tag Battle","NASales":0.04},
+            {"Name":"RPG Maker: Fes","NASales":0.03},
+            {"Name":"Disgaea 1 Complete","NASales":0.03}]
+    };
+
+    var diameter = 900;
+    var color = d3.scaleOrdinal()
+        .range(["blue"]);
+
+    var bubble = d3.pack(dataset)
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var svg = d3.select("#bubbleNA")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+    var nodes = d3.hierarchy(dataset)
+        .sum(function(d) { return d.NASales; });
+
+    var node = svg.selectAll(".node")
+        .data(bubble(nodes).descendants())
+        .enter()
+        .filter(function(d){
+            return  !d.children
+        })
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+    node.append("title")
+        .text(function(d) {
+            return d.data.Name + ": " + d.data.NASales + " Million Copies";
+        });
+
+    node.append("circle")
+        .attr("r", function(d) {
+            return d.r;
+        })
+        .style("fill", function(d,i) {
+            return color(i);
+        });
+
+    node.append("text")
+        .attr("dy", ".2em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+            return d.data.Name.substring(0, d.r / 3);
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", function(d){
+            return d.r/6;
+        })
+        .attr("fill", "white");
+
+    node.append("text")
+        .attr("dy", "1.3em")
+        .style("text-anchor", "middle")
+        // .text(function(d) {
+        //     return d.data.NASales;
+        // })
+        .attr("font-family",  "Gill Sans", "Gill Sans MT")
+        .attr("font-size", function(d){
+            return d.r/4;
+        })
+        .attr("fill", "white");
+
+    d3.select(self.frameElement)
+        .style("height", diameter + "px");
+
+
+
+</script>
+
+<script type="text/javascript">
+
+    dataset = {
+        "children": [{"Name":"Grand Theft Auto V","JPNSales":0.6},
+            {"Name":"Red Dead Redemption 2","JPNSales":0.21},
+            {"Name":"Call of Duty: WWII","JPNSales":0.4},
+            {"Name":"FIFA 18","JPNSales":0.15},
+            {"Name":"FIFA 17","JPNSales":0.12},
+            {"Name":"Grand Theft Auto V","JPNSales":0.01},
+            {"Name":"Fallout 4","JPNSales":0.27},
+            {"Name":"FIFA 16","JPNSales":0.07},
+            {"Name":"Star Wars Battlefront (2015)","JPNSales":0.23},
+            {"Name":"Call of Duty: Advanced Warfare","JPNSales":0.14},
+            {"Name":"Minecraft","JPNSales":0.35},
+            {"Name":"FIFA 15","JPNSales":0.05},
+            {"Name":"God of War (2018)","JPNSales":0.13},
+            {"Name":"Call of Duty: Advanced Warfare","JPNSales":0.01},
+            {"Name":"Final Fantasy XV","JPNSales":1.05},
+            {"Name":"Fallout 4","JPNSales":0.02},
+            {"Name":"Monster Hunter: World","JPNSales":2.17},
+            {"Name":"Pokemon: Let's Go, Pikachu!","JPNSales":0.82},
+            {"Name":"Overwatch","JPNSales":0.17},
+            {"Name":"Star Wars Battlefront (2015)","JPNSales":0.02},
+            {"Name":"Batman: Arkham Knight","JPNSales":0.11},
+            {"Name":"Far Cry 4","JPNSales":0.11},
+            {"Name":"NBA 2K16","JPNSales":0.05},
+            {"Name":"Far Cry 5","JPNSales":0.15},
+            {"Name":"Assassin's Creed Syndicate","JPNSales":0.08},
+            {"Name":"NBA 2K17","JPNSales":0.03},
+            {"Name":"The Elder Scrolls V: Skyrim Special Edition","JPNSales":0.08},
+            {"Name":"NBA 2K18","JPNSales":0.04},
+            {"Name":"Assassin's Creed Odyssey","JPNSales":0.09},
+            {"Name":"Tom Clancy's Ghost Recon Wildlands","JPNSales":0.22},
+            {"Name":"Mafia III","JPNSales":0.04},
+            {"Name":"Far Cry: Primal","JPNSales":0.07},
+            {"Name":"Pokemon: Let's Go, Eevee!","JPNSales":0.51},
+            {"Name":"Need for Speed (2015)","JPNSales":0.06},
+            {"Name":"Mario + Rabbids: Kingdom Battle","JPNSales":0.22},
+            {"Name":"No Man's Sky","JPNSales":0.04},
+            {"Name":"Need for Speed: Payback","JPNSales":0.04},
+            {"Name":"Dragon Quest XI: Echoes of an Elusive Age","JPNSales":1.43},
+            {"Name":"Just Cause 3","JPNSales":0.09},
+            {"Name":"Minecraft","JPNSales":0.52},
+            {"Name":"The Evil Within","JPNSales":0.11},
+            {"Name":"Forza Horizon 4","JPNSales":0.01},
+            {"Name":"Titanfall 2","JPNSales":0.06},
+            {"Name":"Far Cry 4","JPNSales":0.02},
+            {"Name":"The Order: 1886","JPNSales":0.07},
+            {"Name":"Forza Motorsport 7","JPNSales":0.01},
+            {"Name":"Minecraft","JPNSales":0.38},
+            {"Name":"Wolfenstein II: The New Colossus","JPNSales":0.01},
+            {"Name":"Fallout 76","JPNSales":0.1},
+            {"Name":"The Last Guardian","JPNSales":0.13},
+            {"Name":"Hyrule Warriors","JPNSales":0.13},
+            {"Name":"Metal Gear Solid V: Ground Zeroes","JPNSales":0.17},
+            {"Name":"Shadow of the Colossus","JPNSales":0.05},
+            {"Name":"Sunset Overdrive","JPNSales":0},
+            {"Name":"The Elder Scrolls V: Skyrim","JPNSales":0.06},
+            {"Name":"Dragon Quest VIII: Journey of the Cursed King","JPNSales":0.88},
+            {"Name":"Crash Bandicoot N. Sane Trilogy","JPNSales":0.02},
+            {"Name":"FIFA 18","JPNSales":0.13},
+            {"Name":"Disney Magic Castle: My Happy Life","JPNSales":0.53},
+            {"Name":"Ni no Kuni II: Revenant Kingdom","JPNSales":0.12},
+            {"Name":"Super Bomberman R","JPNSales":0.19},
+            {"Name":"Paper Mario: Color Splash","JPNSales":0.08},
+            {"Name":"Mario Party: Star Rush","JPNSales":0.2},
+            {"Name":"Wii Fit U","JPNSales":0.21},
+            {"Name":"Bayonetta 2","JPNSales":0.1},
+            {"Name":"Xenoblade Chronicles X","JPNSales":0.15},
+            {"Name":"The Crew 2","JPNSales":0.05},
+            {"Name":"Professor Layton vs Ace Attorney","JPNSales":0.3},
+            {"Name":"LEGO City Undercover","JPNSales":0.01},
+            {"Name":"Fire Emblem Echoes: Shadows of Valentia","JPNSales":0.21},
+            {"Name":"FIFA 19","JPNSales":0.06},
+            {"Name":"Sonic Forces","JPNSales":0.01},
+            {"Name":"Monster Hunter Generations Ultimate","JPNSales":0.27},
+            {"Name":"Astro Bot Rescue Mission","JPNSales":0.02},
+            {"Name":"The LEGO Movie Videogame","JPNSales":0.01},
+            {"Name":"Plants vs Zombies: Garden Warfare","JPNSales":0},
+            {"Name":"Monster Hunter Stories","JPNSales":0.39},
+            {"Name":"The Evil Within","JPNSales":0},
+            {"Name":"Fortnite","JPNSales":0.01},
+            {"Name":"Mario Party: The Top 100","JPNSales":0.24},
+            {"Name":"Diablo III: Eternal Collection","JPNSales":0.01},
+            {"Name":"LEGO City Undercover","JPNSales":0.03},
+            {"Name":"LEGO The Incredibles","JPNSales":0.01},
+            {"Name":"Final Fantasy Explorers","JPNSales":0.29},
+            {"Name":"LEGO Worlds","JPNSales":0},
+            {"Name":"Kirby and the Rainbow Curse","JPNSales":0.13},
+            {"Name":"Disney Magic World 2","JPNSales":0.23},
+            {"Name":"Bayonetta 2","JPNSales":0.07},
+            {"Name":"Ultra Street Fighter II: The Final Challengers","JPNSales":0.09},
+            {"Name":"Everybody's Golf","JPNSales":0.17},
+            {"Name":"Xenoblade Chronicles","JPNSales":0.13},
+            {"Name":"Puzzle & Dragons Z + Super Mario Bros. Edition","JPNSales":0.35},
+            {"Name":"Metroid: Samus Returns","JPNSales":0.07},
+            {"Name":"Bravely Second: End Layer","JPNSales":0.2},
+            {"Name":"Poochy & Yoshi's Woolly World","JPNSales":0.17},
+            {"Name":"Puyo Puyo Tetris","JPNSales":0.12},
+            {"Name":"Dragon Ball: Xenoverse 2","JPNSales":0.19},
+            {"Name":"Mario Tennis Ultra Smash","JPNSales":0.15},
+            {"Name":"Dragon Ball: Fusions","JPNSales":0.24},
+            {"Name":"Fire Emblem Warriors","JPNSales":0.1},
+            {"Name":"Pokemon Art Academy","JPNSales":0.17},
+            {"Name":"Story of Seasons: Trio of Towns","JPNSales":0.22},
+            {"Name":"Mario Golf: World Tour","JPNSales":0.18},
+            {"Name":"Animal Crossing: Amiibo Festival","JPNSales":0.1},
+            {"Name":"Luigi's Mansion","JPNSales":0.09},
+            {"Name":"Detective Pikachu","JPNSales":0.12},
+            {"Name":"Knack 2","JPNSales":0.01},
+            {"Name":"Sonic Mania","JPNSales":0.01},
+            {"Name":"Mario Sports Superstars","JPNSales":0.13},
+            {"Name":"Hyrule Warriors: Definitive Edition","JPNSales":0.07},
+            {"Name":"Hey! Pikmin","JPNSales":0.17},
+            {"Name":"Star Fox: Zero","JPNSales":0.09},
+            {"Name":"Dragon Ball FighterZ","JPNSales":0.07},
+            {"Name":"NBA 2K18","JPNSales":0.03},
+            {"Name":"Doom (2016)","JPNSales":0.01},
+            {"Name":"Nintendo Labo: Toy-Con 03 Vehicle Kit","JPNSales":0.06},
+            {"Name":"Wii Sports Club","JPNSales":0.04},
+            {"Name":"Hatsune Miku: Project Mirai DX","JPNSales":0.11},
+            {"Name":"Burnout Paradise Remastered","JPNSales":0.01},
+            {"Name":"Shin Megami Tensei IV: Apocalypse","JPNSales":0.16},
+            {"Name":"Nintendo Labo: Toy-Con 02 Robot Kit","JPNSales":0.08},
+            {"Name":"Dragon Ball Z: Extreme Butoden","JPNSales":0.17},
+            {"Name":"Dead or Alive 5 Last Round","JPNSales":0.09},
+            {"Name":"Disgaea 5 Complete","JPNSales":0.05},
+            {"Name":"Kirby: Battle Royale","JPNSales":0.2},
+            {"Name":"Tokyo Mirage Sessions #FE","JPNSales":0.08},
+            {"Name":"Dark Souls: Remastered","JPNSales":0.03},
+            {"Name":"Chibi-Robo! Zip Lash","JPNSales":0.07},
+            {"Name":"Monopoly for Nintendo Switch","JPNSales":0.01},
+            {"Name":"Naruto to Boruto: Shinobi Striker","JPNSales":0.02},
+            {"Name":"Overcooked! 2","JPNSales":0.01},
+            {"Name":"The Legend of Legacy","JPNSales":0.11},
+            {"Name":"Ever Oasis","JPNSales":0.05},
+            {"Name":"WarioWare Gold","JPNSales":0.13},
+            {"Name":"Etrian Mystery Dungeon","JPNSales":0.14},
+            {"Name":"Etrian Odyssey V: Beyond the Myth","JPNSales":0.14},
+            {"Name":"The World Ends with You: Final Remix","JPNSales":0.03},
+            {"Name":"Stella Glow","JPNSales":0.06},
+            {"Name":"Sonic Boom: Fire & Ice","JPNSales":0.02},
+            {"Name":"Sid Meier's Civilization VI","JPNSales":0.01},
+            {"Name":"7th Dragon III Code: VFD","JPNSales":0.13},
+            {"Name":"Attack on Titan 2","JPNSales":0.08},
+            {"Name":"Code Name: S.T.E.A.M.","JPNSales":0.02},
+            {"Name":"Attack on Titan 2","JPNSales":0.06},
+            {"Name":"Life Is Strange: Before the Storm","JPNSales":0.02},
+            {"Name":"Dragon Quest Builders: Revive Alefgard","JPNSales":0.07},
+            {"Name":"Fate/Extella: The Umbral Star","JPNSales":0.04},
+            {"Name":"Radiant Historia: Perfect Chronology","JPNSales":0.06},
+            {"Name":"Valkyria Chronicles 4","JPNSales":0.02},
+            {"Name":"Project X Zone 2","JPNSales":0.09},
+            {"Name":"Captain Toad: Treasure Tracker","JPNSales":0.08},
+            {"Name":"Street Fighter 30th Anniversary Collection","JPNSales":0.01},
+            {"Name":"Resident Evil: Revelations","JPNSales":0.04},
+            {"Name":"Xenoblade Chronicles 2: Torna ~ The Golden Country","JPNSales":0.02},
+            {"Name":"Gravity Rush Remastered","JPNSales":0.05},
+            {"Name":"Gear.Club Unlimited","JPNSales":0.01},
+            {"Name":"Metroid Prime: Federation Force","JPNSales":0.03},
+            {"Name":"Rodea the Sky Soldier","JPNSales":0.01},
+            {"Name":"Ys VIII: Lacrimosa of Dana","JPNSales":0.03},
+            {"Name":"Dead or Alive 5 Last Round","JPNSales":0.01},
+            {"Name":"Sushi Striker: The Way of Sushido","JPNSales":0.03},
+            {"Name":"BlazBlue: Cross Tag Battle","JPNSales":0.01},
+            {"Name":"RPG Maker: Fes","JPNSales":0.02},
+            {"Name":"Disgaea 1 Complete","JPNSales":0.01}]
+    };
+
+    var diameter = 900;
+    var color = d3.scaleOrdinal()
+        .range(["red"]);
+
+    var bubble = d3.pack(dataset)
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var svg = d3.select("#bubbleJapan")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+    var nodes = d3.hierarchy(dataset)
+        .sum(function(d) { return d.JPNSales; });
+
+    var node = svg.selectAll(".node")
+        .data(bubble(nodes).descendants())
+        .enter()
+        .filter(function(d){
+            return  !d.children
+        })
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+        node.append("title")
+        .text(function(d) {
+            return d.data.Name + ": " + d.data.JPNSales + " Million Copies";
+        });
+
+    node.append("circle")
+        .attr("r", function(d) {
+            return d.r;
+        })
+        .style("fill", function(d,i) {
+            return color(i);
+        });
+
+    node.append("text")
+        .attr("dy", ".2em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+            return d.data.Name.substring(0, d.r / 3);
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", function(d){
+            return d.r/6;
+        })
+        .attr("fill", "white");
+
+    node.append("text")
+        .attr("dy", "1.3em")
+        .style("text-anchor", "middle")
+        .attr("font-family",  "Gill Sans", "Gill Sans MT")
+        .attr("font-size", function(d){
+            return d.r/4;
+        })
+        .attr("fill", "white");
+
+    d3.select(self.frameElement)
+        .style("height", diameter + "px");
+
+
+
+</script>
+</html>

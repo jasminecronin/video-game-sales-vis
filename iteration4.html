@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html style="zoom:75%" lang="en">
+<title>Grand Theft Monster Hunter</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+
+    /* Tooltip */
+    /* REFERENCE: ( https://bl.ocks.org/d3noob/a22c42db65eb00d4e369 ) */
+    tooltipTest.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 200px;
+        height: 60px;
+        padding: 2px;
+        font: 12px sans-serif;
+        background: darkgrey;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+    }
+
+    /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 25px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card" style="font-size:25px">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">First Iteration</a>
+    <a href="iteration2.html" class="w3-bar-item w3-button w3-padding-large">Second Iteration</a>
+    <a href="iteration3.html" class="w3-bar-item w3-button w3-padding-large">Third Iteration</a>
+    <a href="iteration4.html" class="w3-bar-item w3-button w3-padding-large">Final Iteration</a>
+    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+  </div>
+</div>
+
+<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+  <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">First Iteration</a>
+</div>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:3000px;margin-top:46px">
+  <!-- The Tour Section -->
+  <div class="w3-black" id="tour">
+    <div class="w3-container w3-content w3-padding-64" style="max-width:900px; margin-top: 100px;">
+      <h2 class="w3-wide w3-center">Grand Theft Monster Hunter: Examining Video Game Trends in North America and Japan</h2>
+    </div>
+  </div>
+  <div class="tab w3-container w3-content">
+        <button style="margin-left:100px;" class="tablinks" onclick="openChart(event, 'stackedBarChartsFinal')">Genre Sales by Platform</button>
+        <button class="tablinks" onclick="openChart(event, 'donutChart')">Platform Sales</button>
+<!--        <button class="tablinks" onclick="openChart(event, 'bubbleChartFinal')">Best Selling Games</button>-->
+      </div>
+      <h1 style="padding-top:40; text-align: center;">North America vs. Japan</h1>
+  <div id="stackedBarChartsFinal" class="tabcontent w3-container w3-content" style="max-width:800px;">
+    </div>
+  <div id="donutChart" class="tabcontent w3-container w3-content" style="max-width:800px;display:none;">
+      <link rel="stylesheet" type="text/css" href="project.css"/>
+      <h2 style="padding-top:40; text-align: center;">Video Game Sales by Console</h1>
+      <div style="position: relative; width: 2000px; left:-625px;">
+          <div width="1000" height="500"style="float: left;">
+              <svg id="nadata" class="svg_boxes"></svg>
+            </div>
+          <div width="1000"  height="500"style="float: right;">
+              <svg id="jpdata" class="svg_boxes"></svg>
+            </div>
+      </div>
+  </div>
+  <div id="bubbleChartFinal" class="w3-container w3-content" style="max-width:800px;">
+    <h2 style="text-align: center;">Best Selling Games by Region (per 100 000 Capita)</h2>
+    <div style="position: relative; width: 2000px; left:-625px;">
+            <div width="1000" height="1000"style="float: left;">
+                <svg id="bubbleNAFinal" width="1000" height="1000"></svg>
+            </div>
+            <div width="1000"  height="100"style="float: right;">
+                <svg id="bubbleJapanFinal" width="1000" height="1000"></svg>
+            </div>
+    </div>
+  </div>
+<!-- End Page Content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="bubbleChartFinal.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script type="text/javascript" src="donutvariationfinal.js"></script>
+<script> 
+    $(function(){
+      $("#stackedBarChartsFinal").load("stackedBarChartsFinal.html"); 
+    });
+    // openChart authored by https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tabs
+function openChart(evt, chartName) {
+  d3.selectAll("#bubbleJapanFinal > *").remove();
+  d3.selectAll("#bubbleNAFinal > *").remove();
+
+  createBubbleChartJP(datasetJPRegion)
+  createBubbleChartNA(datasetNARegion)
+  
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(chartName).style.display = "block";
+  if(chartName == "stackedBarChartsFinal"){
+    document.getElementById("bubbleChartFinal").style.display = "block";
+  }
+  evt.currentTarget.className += " active";
+}
+  </script> 
+
+</body>
+</html>

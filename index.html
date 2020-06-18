@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html style="zoom:75%" lang="en">
+<title>Grand Theft Monster Hunter</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card" style="font-size:25px">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large">First Iteration</a>
+    <a href="iteration2.html" class="w3-bar-item w3-button w3-padding-large">Second Iteration</a>
+    <a href="iteration3.html" class="w3-bar-item w3-button w3-padding-large">Third Iteration</a>
+    <a href="iteration4.html" class="w3-bar-item w3-button w3-padding-large">Final Iteration</a>
+    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+  </div>
+</div>
+
+<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+  <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">First Iteration</a>
+</div>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:3000px;margin-top:46px">
+  <!-- The Tour Section -->
+  <div class="w3-black" id="tour">
+    <div class="w3-container w3-content w3-padding-64" style="max-width:900px; margin-top: 100px;">
+      <h2 class="w3-wide w3-center">Grand Theft Monster Hunter: Examining Video Game Trends in North America and Japan</h2>
+    </div>
+  </div>
+<div id="dotChart"class="w3-container w3-content w3-padding-64" style="max-width:2000px">
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <link rel="stylesheet" href="map.css">
+  <h2 style="text-align: center;">Publisher Locations</h2>
+  <div id="worldMap">
+  </div>
+  <script src="map.js"></script>
+</div> 
+  <div id="stackedBarchart" class="w3-container w3-content w3-padding-64" style="max-width:800px">
+    </div>
+  <div id="bubbleChart" class="w3-container w3-content w3-padding-64" style="max-width:800px">
+  </div>
+  <div id="donutChart" class="w3-container w3-content w3-padding-64" style="max-width:800px">
+      <link rel="stylesheet" type="text/css" href="project.css"/>
+      <script src="https://d3js.org/d3.v5.min.js"></script>
+<!--      <script type="text/javascript" src="donutvariation.js"></script>      <h1 style="padding-top:40; text-align: center;">Video Game Sales by Console</h1>-->
+      <script type="text/javascript" src="project.js"></script>      <h2 style="padding-top:40; text-align: center;">Video Game Sales by Console</h1>
+      <div style="position: relative; width: 2000px; left:-625px;">
+          <div width="1000" height="500"style="float: left;">
+              <svg id="nadata" class="svg_boxes"></svg>
+            </div>
+          <div width="1000"  height="500"style="float: right;">
+              <svg id="jpdata" class="svg_boxes"></svg>
+            </div>
+      </div>
+      
+      
+  </div>
+  
+<!-- End Page Content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script> 
+    $(function(){
+      $("#stackedBarchart").load("stackedBarCharts.html"); 
+      // $("#dotChart").load("map.html"); 
+      $("#bubbleChart").load("oldBubbleChart.html"); 
+    });
+  </script> 
+
+</body>
+</html>

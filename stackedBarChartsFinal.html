@@ -1,0 +1,34 @@
+<html>
+
+  <meta charset="utf-8">
+  <script src="d3.js"></script>
+  <style>
+    .y-axis .tick line {
+      stroke: rgb(238, 238, 238);
+    }
+
+    .y-axis path {
+      stroke: rgb(238, 238, 238);
+    }
+
+    #northAmerica {
+      /* background-color: white; */
+      padding-left: 10px;
+    }
+    #japan {
+      /* background-color: white; */
+      padding-left: 10px;
+    }
+  </style>
+    <h2 style="text-align: center;">Regional Sales by Genre and Platform</h2>
+    <div style="position: relative; width: 2000px; left:-625px;">
+      <div width="960" height="600"style="float: left;">
+        <svg id="northAmerica" width="960" height="600"></svg>
+      </div>
+      <div width="960"  height="600"style="float: right;">
+        <svg id="japan" width="960" height="600"></svg>
+      </div>
+    </div>
+
+  <script src="barChartsFinal.js"></script>
+</html>

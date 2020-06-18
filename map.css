@@ -1,0 +1,19 @@
+#worldMap {
+    background-image: url('https://i.imgur.com/k18AusM.jpg');
+    background-repeat: no-repeat;
+    background-size: 1800px 900px;
+
+}
+
+#worldMap.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 200px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: orange;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
