@@ -1,5 +1,9 @@
 # Video Game Sales Data
 
+View and interact with the visualization here: https://jasminecronin.github.io/video-game-sales-vis/
+
+## Report
+
 ![cap](https://github.com/jasminecronin/video-game-sales-vis/blob/master/images/cap01.png)
 
 ![cap](https://github.com/jasminecronin/video-game-sales-vis/blob/master/images/cap02.png)
